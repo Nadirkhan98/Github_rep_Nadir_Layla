@@ -48,12 +48,7 @@ function App() {
   // [] => useEffect will run once
   // [search] => useEffect will run everytime the value changes
 
-  console.log(username)
-  const renderedRepos = repos.map(r => {
-    return (
-      <li key={r.github}>{r.name}</li>
-    )
-  })
+  
 
   const onInputChange = (e) => {
     setUsername(e.target.value)
@@ -64,6 +59,17 @@ function App() {
     setSearch(username)
     setUsername('')
   }
+
+  const onRepoSelect = (e) => {
+    console.log('hi')
+  }
+
+  console.log(username)
+  const renderedRepos = repos.map(r => {
+    return (
+      <button key={r.id} id={r.id} onClick={onRepoSelect}>{r.name}</button>
+    )
+  })
 
   return (
     <div className="App">
@@ -85,6 +91,12 @@ function App() {
             onChange={onInputChange}
           />
         </form>
+        <div className="modal">
+          <h2 className="repoName"></h2>
+          <p className="openIssueCount"></p>
+          <p className="watchersCount"></p>
+          <p className="forks"></p>
+        </div>
       </header>
     </div>
   );
