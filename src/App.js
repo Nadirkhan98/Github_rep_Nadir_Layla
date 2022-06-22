@@ -1,5 +1,3 @@
-// console.log("npm install axios")
-
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -15,6 +13,7 @@ function App() {
   const [forks, setForks] = useState("");
   
   const [visibility, setVisibility] = useState("hidden")
+  const [titleVisibility, setTitleVisibility] = useState("hidden")
 
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
@@ -24,23 +23,23 @@ function App() {
   useEffect(() => {
 
     const fetchRepos = async (searchTerm) => {
-      searchTerm ||= 'laylasouthcombe'
+      searchTerm ||= 'rom-30'
       try {
         const url = `https://api.github.com/users/${searchTerm}/repos`
-
-        // const { data: { students } } = await axios.get(url)
         const { data } = await axios.get(url)
-        console.log(data)
         setRepos(data)
         setStatusMessage('')
         setError('')
+        setTitleVisibility("visible")
       } catch (err) {
+        console.log(err)
         setError(err)
         setStatusMessage('Loading...')
       }
     }
     const timeoutId = setTimeout(() => {
       fetchRepos(search)
+      setStatusMessage('Loading...')
     }, 400);
 
     return () => {
@@ -49,14 +48,10 @@ function App() {
 
   }, [search])
 
-  // nothing => useEffect will run like crazy
-  // [] => useEffect will run once
-  // [search] => useEffect will run everytime the value changes
-
-  
-
   const onInputChange = (e) => {
     setUsername(e.target.value)
+    setRepos([])
+    setTitleVisibility("hidden")
   }
 
   const onFormSubmit = (e) => {
@@ -67,7 +62,6 @@ function App() {
 
   const onRepoSelect = (e) => {
     const id = e.target.id
-    console.log(repos[id])
     setRepoName(repos[id].name) 
     setOpenIssueCount(repos[id].open_issues_count) 
     setWatcherCount(repos[id].watchers_count) 
@@ -75,7 +69,6 @@ function App() {
     setVisibility("visible")
   }
 
-  console.log(username)
   const renderedRepos = repos.map((r, i) => {
     return (
       <button key={i} id={i} onClick={onRepoSelect}>{r.name}</button>
@@ -85,25 +78,28 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {error
-          ? <h1>Sorry, we could not find a(n) {search} username</h1>
-          : <div>
-            <h3> {statusMessage ? statusMessage : ''} </h3>
-            <ul> {renderedRepos} </ul>
-          </div>
-        }
-
         <form onSubmit={onFormSubmit}>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username" className="username">Username</label>
+          <br />
           <input
             type="text"
             id="username"
             value={username}
             onChange={onInputChange}
           />
+          <br />
+          <input className="search" type="submit" value="Search"/>
         </form>
+        {error
+          ? <h1>Sorry, we could not find a username called {search}</h1>
+          : <div>
+            <h3> {statusMessage ? statusMessage : ''} </h3>
+            <h3 id="reposTitle" className={titleVisibility}>Repositories found:</h3>
+            <ul> {renderedRepos} </ul>
+          </div>
+        }
         <div id="modal" className={visibility}>
-          <h2 className="repoName">Repo name: {repoName}</h2>
+          <h2 className="repoName">Repo name: <br/>{repoName}</h2>
           <p className="openIssueCount">Open issues count: {openIssueCount}</p>
           <p className="watchersCount">Watcher count: {watcherCount}</p>
           <p className="forks">Forks: {forks}</p>
@@ -112,7 +108,5 @@ function App() {
     </div>
   );
 }
-
-
 
 export default App;
