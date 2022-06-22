@@ -7,14 +7,17 @@ import axios from 'axios';
 
 function App() {
   const [username, setUsername] = useState('');
-  
   const [repos, setRepos] = useState([]);
+
+  const [repoName, setRepoName] = useState("");
+  const [openIssueCount, setOpenIssueCount] = useState("");
+  const [watcherCount, setWatcherCount] = useState("");
+  const [forks, setForks] = useState("");
   
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
   const [statusMessage, setStatusMessage] = useState('Loading');
-
-
+ 
 
   useEffect(() => {
 
@@ -61,13 +64,18 @@ function App() {
   }
 
   const onRepoSelect = (e) => {
-    console.log('hi')
+    const id = e.target.id
+    console.log(repos[id])
+    setRepoName(repos[id].name) 
+    setOpenIssueCount(repos[id].open_issues_count) 
+    setWatcherCount(repos[id].watchers_count) 
+    setForks(repos[id].forks)
   }
 
   console.log(username)
-  const renderedRepos = repos.map(r => {
+  const renderedRepos = repos.map((r, i) => {
     return (
-      <button key={r.id} id={r.id} onClick={onRepoSelect}>{r.name}</button>
+      <button key={i} id={i} onClick={onRepoSelect}>{r.name}</button>
     )
   })
 
@@ -92,14 +100,16 @@ function App() {
           />
         </form>
         <div className="modal">
-          <h2 className="repoName"></h2>
-          <p className="openIssueCount"></p>
-          <p className="watchersCount"></p>
-          <p className="forks"></p>
+          <h2 className="repoName">Repo name: {repoName}</h2>
+          <p className="openIssueCount">Open issues count: {openIssueCount}</p>
+          <p className="watchersCount">Watcher count: {watcherCount}</p>
+          <p className="forks">Forks: {forks}</p>
         </div>
       </header>
     </div>
   );
 }
+
+
 
 export default App;
