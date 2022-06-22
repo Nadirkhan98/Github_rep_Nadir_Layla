@@ -37,9 +37,13 @@
   }
 }
 
-.modal {
+#modal {
   background-color: aliceblue;
   width: 300px;
   height: 400px;
   color: black;
+  visibility: hidden;
+}
+.visible {
+  visibility: visible !important;
 }

@@ -14,6 +14,8 @@ function App() {
   const [watcherCount, setWatcherCount] = useState("");
   const [forks, setForks] = useState("");
   
+  const [visibility, setVisibility] = useState("hidden")
+
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
   const [statusMessage, setStatusMessage] = useState('Loading');
@@ -70,6 +72,7 @@ function App() {
     setOpenIssueCount(repos[id].open_issues_count) 
     setWatcherCount(repos[id].watchers_count) 
     setForks(repos[id].forks)
+    setVisibility("visible")
   }
 
   console.log(username)
@@ -99,7 +102,7 @@ function App() {
             onChange={onInputChange}
           />
         </form>
-        <div className="modal">
+        <div id="modal" className={visibility}>
           <h2 className="repoName">Repo name: {repoName}</h2>
           <p className="openIssueCount">Open issues count: {openIssueCount}</p>
           <p className="watchersCount">Watcher count: {watcherCount}</p>
