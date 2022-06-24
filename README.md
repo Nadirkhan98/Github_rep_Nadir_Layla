@@ -9,4 +9,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Run `npm start`
 
 ## Use
-- Enter a username in the input field to find out key metrics from their github repos
+- Enter a username in the input field to find out key metrics from their GitHub repos
