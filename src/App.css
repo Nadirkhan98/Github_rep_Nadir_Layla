@@ -58,7 +58,6 @@ button {
   height: 350px;
   color: black;
   visibility: hidden;
-  /* text-align: center; */
 }
 
 #modal > h2 {
@@ -77,4 +76,14 @@ button {
 
 .hidden {
   visibility: hidden !important;
+}
+
+.usernameSearchTerm{
+  font-size: 26px;
+  background-color: rgb(159, 122, 194);
+  width: 50%;
+  margin: 0 auto;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 15px;
 }

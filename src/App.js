@@ -4,8 +4,9 @@ import axios from 'axios';
 
 
 function App() {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [repos, setRepos] = useState([]);
+  const [usernameText, setUsernameText] = useState("");
 
   const [repoName, setRepoName] = useState("");
   const [openIssueCount, setOpenIssueCount] = useState("");
@@ -14,6 +15,7 @@ function App() {
   
   const [visibility, setVisibility] = useState("hidden")
   const [titleVisibility, setTitleVisibility] = useState("hidden")
+  const [usernameTextVisibility, setUsernameTextVisibility] = useState("hidden")
 
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
@@ -23,18 +25,19 @@ function App() {
   useEffect(() => {
 
     const fetchRepos = async (searchTerm) => {
-      searchTerm ||= 'rom-30'
+      searchTerm ||= 'octocat'
       try {
         const url = `https://api.github.com/users/${searchTerm}/repos`
         const { data } = await axios.get(url)
         setRepos(data)
+        console.log(data)
         setStatusMessage('')
         setError('')
         setTitleVisibility("visible")
+        setUsernameTextVisibility("visible")
       } catch (err) {
-        console.log(err)
         setError(err)
-        setStatusMessage('Loading...')
+        setStatusMessage('error', err)
       }
     }
     const timeoutId = setTimeout(() => {
@@ -50,7 +53,9 @@ function App() {
 
   const onInputChange = (e) => {
     setUsername(e.target.value)
+    setUsernameText(e.target.value)
     setRepos([])
+    setUsernameTextVisibility("hidden")
     setTitleVisibility("hidden")
   }
 
@@ -94,6 +99,7 @@ function App() {
           ? <h1>Sorry, we could not find a username called {search}</h1>
           : <div>
             <h3> {statusMessage ? statusMessage : ''} </h3>
+            <h3 className="usernameSearchTerm" style={{visibility: usernameTextVisibility}}>{usernameText}</h3>
             <h3 id="reposTitle" className={titleVisibility}>Repositories found:</h3>
             <ul> {renderedRepos} </ul>
           </div>
